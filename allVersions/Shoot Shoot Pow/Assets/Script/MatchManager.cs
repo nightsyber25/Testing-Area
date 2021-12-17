@@ -14,12 +14,35 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         instance = this;
     }
-    
+
     public enum EventCodes : byte
     {
-        ListPlayer,
+        Setup,
+        StartGameDraw,
+        SpecialCardPhase,
+        NormalCardPhase,
+        DetermineWinner,
         Endturn,
 
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if(photonEvent.Code < 200)
+        {
+            EventCodes theEvent = (EventCodes)photonEvent.Code;
+            object[]data = (object[])photonEvent.CustomData;
+
+            switch(theEvent)
+            {
+                case EventCodes.Setup:
+
+                SetupRecieve(data);
+
+                break;
+
+            }
+        }
     }
 
 
@@ -39,12 +62,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         
     }
 
-    public void OnEvent(EventData photonEvent)
+    public override void OnLeftRoom()
     {
-        if(photonEvent.Code < 200)
-        {
-            EventCodes theEvent = (EventCodes)photonEvent.Code;
-        }
+        base.OnLeftRoom();
+        SceneManager.LoadScene(0);
     }
 
     public override void OnEnable()
@@ -56,5 +77,28 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
-    
+
+    public void SetupSend()
+    {
+
+    }
+
+    public void SetupRecieve(object[] dataRecieve)
+    {
+
+    }
+
+    public class PlayerInfo
+    {
+        public string name;
+        public int card1,card2,card3;
+
+        public PlayerInfo(string _name,int _card1,int _card2,int _card3)
+        {
+            name = _name;
+            card1 = _card1;
+            card2 = _card2;
+            card3 = _card3;
+        }
+    }
 }

@@ -46,39 +46,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (photonView.IsMine)
         {
             PlayerMovement();
-            if (!overHeated)
-            {
-                // if(Input.GetMouseButtonDown(0))
-                // {
-                //     Shoot();
-                // }
-
-                if (Input.GetMouseButton(0))
+                if(Input.GetMouseButtonDown(0))
                 {
-                    shotCounter -= Time.deltaTime;
-
-                    if (shotCounter <= 0)
-                    {
-                        Shoot();
-                    }
+                    Shoot();
                 }
-                heatCounter -= coolRate * Time.deltaTime;
-            }
-            else
-            {
-                heatCounter -= overHeatCoolRate * Time.deltaTime;
-                if (heatCounter <= 0)
-                {
-                    overHeated = false;
-                    UIController.instance.overHeatedMessage.gameObject.SetActive(false);
-                }
-            }
-            if (heatCounter <= 0)
-            {
-                heatCounter = 0f;
-            }
-            UIController.instance.weaponTempSlider.value = heatCounter;
-
             CursorUnlockWhenESC();
         }
     }
@@ -94,16 +65,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             GameObject bulletImpactObject = Instantiate(bulletImpact, hit.point + (hit.normal * 0.002f), Quaternion.LookRotation(hit.normal, Vector3.up));
             Destroy(bulletImpactObject, 10f);
         }
-        shotCounter = timeBetweenShot;
-
-        heatCounter += heatPerShot;
-        if (heatCounter >= maxHeat)
-        {
-            heatCounter = maxHeat;
-            overHeated = true;
-            UIController.instance.overHeatedMessage.gameObject.SetActive(true);
-        }
-
     }
 
     private void PlayerMovement()
@@ -114,34 +75,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         verticalRotationStored += mouseInput.y;
         verticalRotationStored = Mathf.Clamp(verticalRotationStored, -60, 60);
         viewPoint.rotation = Quaternion.Euler(-verticalRotationStored, transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-
-        moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            activeSpeed = runSpeed;
-        }
-        else
-        {
-            activeSpeed = moveSpeed;
-        }
-
-        float yVelocity = movement.y;
-        movement = ((transform.forward * moveDirection.z) + (transform.right * moveDirection.x)).normalized * activeSpeed;
-        movement.y = yVelocity;
-        if (charController.isGrounded)
-        {
-            movement.y = 0f;
-        }
-
-        isGrounded = Physics.Raycast(groundCheckPoint.position, Vector3.down, .25f, groundLayers);
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            movement.y = jumpForce;
-        }
-
-        movement.y += Physics.gravity.y * Time.deltaTime * gravityMod;
-        charController.Move(movement * Time.deltaTime);
     }
 
     private static void CursorUnlockWhenESC()
