@@ -23,7 +23,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         NormalCardPhase,
         DetermineWinner,
         Endturn,
-
     }
 
     public void OnEvent(EventData photonEvent)

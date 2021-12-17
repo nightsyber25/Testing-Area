@@ -8,9 +8,6 @@ public class UIController : MonoBehaviour
 {
     public static UIController instance;
 
-    public TMP_Text overHeatedMessage;
-    public Slider weaponTempSlider;
-
     public GameObject setupScreen;
     public TMP_Text paperAmount;
     public TMP_Text rockAmount;
@@ -31,7 +28,7 @@ public class UIController : MonoBehaviour
     {
         setupScreen.SetActive(true);
         currentTime = startingTime;
-        DeckController.instance.PrintDeck();
+        // DeckController.instance.PrintDeck();
     }
 
     // Update is called once per frame

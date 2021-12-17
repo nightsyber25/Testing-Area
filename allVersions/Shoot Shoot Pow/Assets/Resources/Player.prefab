@@ -275,21 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 6507148488455192675}
   mouseSensitive: 1
-  moveSpeed: 5
-  runSpeed: 8
-  charController: {fileID: 6507148488622843036}
-  jumpForce: 6
-  gravityMod: 2.5
-  groundCheckPoint: {fileID: 6507148486841118498}
-  groundLayers:
-    serializedVersion: 2
-    m_Bits: 64
   bulletImpact: {fileID: 6465921985941622615, guid: 39ec34606778cd640944e420e9fac6ee, type: 3}
-  timeBetweenShot: 0.1
-  maxHeat: 10
-  heatPerShot: 1
-  coolRate: 4
-  overHeatCoolRate: 5
 --- !u!143 &6507148488622843036
 CharacterController:
   m_ObjectHideFlags: 0
