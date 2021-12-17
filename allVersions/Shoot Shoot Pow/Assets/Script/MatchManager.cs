@@ -80,7 +80,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void SetupSend()
     {
-
+        
     }
 
     public void SetupRecieve(object[] dataRecieve)

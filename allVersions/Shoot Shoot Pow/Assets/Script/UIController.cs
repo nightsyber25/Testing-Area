@@ -31,11 +31,13 @@ public class UIController : MonoBehaviour
     {
         setupScreen.SetActive(true);
         currentTime = startingTime;
+        DeckController.instance.PrintDeck();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         currentTime -= 1 * Time.deltaTime;
         timeCounter.text = currentTime.ToString("0");    
         if(currentTime < 0)

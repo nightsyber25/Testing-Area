@@ -8,28 +8,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {
     [SerializeField] Transform viewPoint;
     [SerializeField] float mouseSensitive = 1f;
-    [SerializeField] float moveSpeed = 5f, runSpeed = 8f;
-    private float activeSpeed;
-    [SerializeField] CharacterController charController;
-    [SerializeField] float jumpForce = 6f;
-    [SerializeField] float gravityMod = 2.5f;
 
     private float verticalRotationStored;
     private Vector2 mouseInput;
-    private Vector3 moveDirection, movement;
     private Camera cam;
 
-    [SerializeField] Transform groundCheckPoint;
-    private bool isGrounded;
-    [SerializeField] LayerMask groundLayers;
-
     [SerializeField] GameObject bulletImpact;
-    [SerializeField] float timeBetweenShot = .1f;
-    float shotCounter;
-
-    [SerializeField] float maxHeat = 10f, heatPerShot = 1f, coolRate = 4f, overHeatCoolRate = 5f;
-    float heatCounter;
-    bool overHeated;
 
 
     // Start is called before the first frame update
@@ -37,7 +21,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
-        UIController.instance.weaponTempSlider.maxValue = maxHeat;
     }
 
     // Update is called once per frame
