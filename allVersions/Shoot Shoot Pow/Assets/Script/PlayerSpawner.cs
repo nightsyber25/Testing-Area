@@ -34,7 +34,7 @@ public class PlayerSpawner : MonoBehaviour
         }
         else
         {
-            player = PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(0f,1.5f,1.9f),Quaternion.identity);
+            player = PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(0f,1.5f,1.9f),Quaternion.Euler(new Vector3(0,180,0)));
         }
 
     }

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Photon.Pun;
 
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
 
     public GameObject setupScreen;
+    public GameObject optionScreen;
     public TMP_Text paperAmount;
     public TMP_Text rockAmount;
     public TMP_Text scissorAmount;
@@ -28,19 +30,53 @@ public class UIController : MonoBehaviour
     {
         setupScreen.SetActive(true);
         currentTime = startingTime;
-        // DeckController.instance.PrintDeck();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        currentTime -= 1 * Time.deltaTime;
-        timeCounter.text = currentTime.ToString("0");    
-        if(currentTime < 0)
+        if (setupScreen.activeInHierarchy)
         {
-            currentTime = 0;
-            setupScreen.SetActive(false);
+            currentTime -= 1 * Time.deltaTime;
+            timeCounter.text = currentTime.ToString("0");
+            if (currentTime < 0)
+            {
+                currentTime = 0;
+                setupScreen.SetActive(false);
+            }
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ShowHideOption();
+        }
+        
+        if(optionScreen.activeInHierarchy && Cursor.lockState != CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    public void ShowHideOption()
+    {
+        if(!optionScreen.activeInHierarchy)
+        {
+            optionScreen.SetActive(true);
+        }
+        else
+        {
+            optionScreen.SetActive(false);
+        }
+    }
+
+    public void ReturnToMainMenu()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

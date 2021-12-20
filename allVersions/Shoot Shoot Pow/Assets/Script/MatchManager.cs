@@ -9,6 +9,8 @@ using ExitGames.Client.Photon;
 public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static MatchManager instance;
+    public List<Card> Deck = new List<Card>();
+
 
     private void Awake()
     {
@@ -77,9 +79,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
-    public void SetupSend()
+    public void SetupSend(Card cardDeck)
     {
-        
+
     }
 
     public void SetupRecieve(object[] dataRecieve)
@@ -91,13 +93,16 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         public string name;
         public int card1,card2,card3;
+        public int countWin,countLose;
 
-        public PlayerInfo(string _name,int _card1,int _card2,int _card3)
+        public PlayerInfo(string _name,int _card1,int _card2,int _card3,int _countWin,int _countLose)
         {
             name = _name;
             card1 = _card1;
             card2 = _card2;
             card3 = _card3;
+            countWin = _countWin;
+            countLose = _countLose;
         }
     }
 }
