@@ -67,6 +67,7 @@ public class UIController : MonoBehaviour
         else
         {
             optionScreen.SetActive(false);
+            Cursor.visible = false;
         }
     }
 

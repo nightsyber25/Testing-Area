@@ -12,9 +12,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float verticalRotationStored;
     private Vector2 mouseInput;
     private Camera cam;
-
     [SerializeField] GameObject bulletImpact;
-
 
     // Start is called before the first frame update
     void Start()
@@ -84,4 +82,5 @@ public class PlayerController : MonoBehaviourPunCallbacks
         }
 
     }
+
 }
