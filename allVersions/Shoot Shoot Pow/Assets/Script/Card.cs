@@ -11,7 +11,11 @@ public class Card
     // ID == 1 Scisscor
     // ID == 2 Paper
     // ID == 3 Rock
-    // ID == (4-8) Special card
+    // ID == 4 Burn Rock
+    // ID == 5 Burn Paper
+    // ID == 6 Burn Scissor
+    // ID == 7 Swap
+    // ID == 8 Peak
     public int cardID;
     public string cardName;
     public bool specialCard = false;

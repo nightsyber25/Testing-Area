@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
     void Start()
     {
         setupScreen.SetActive(true);
+        UpdateSetupScreen();
         currentTime = startingTime;
     }
 
@@ -67,7 +68,6 @@ public class UIController : MonoBehaviour
         else
         {
             optionScreen.SetActive(false);
-            Cursor.visible = false;
         }
     }
 
@@ -79,5 +79,17 @@ public class UIController : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    private void UpdateSetupScreen()
+    {
+        scissorAmount.text = DeckController.instance.numOfCardInDeck[1].ToString();
+        paperAmount.text = DeckController.instance.numOfCardInDeck[2].ToString();
+        rockAmount.text = DeckController.instance.numOfCardInDeck[3].ToString();
+        specialAmount.text = (DeckController.instance.numOfCardInDeck[4]+
+        DeckController.instance.numOfCardInDeck[5]+
+        DeckController.instance.numOfCardInDeck[6]+
+        DeckController.instance.numOfCardInDeck[7]+
+        DeckController.instance.numOfCardInDeck[8]).ToString();
     }
 }

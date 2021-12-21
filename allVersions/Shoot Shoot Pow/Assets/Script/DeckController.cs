@@ -8,10 +8,6 @@ public class DeckController : MonoBehaviour
     public List<Card> cardDeck = new List<Card>();
     public int[] numOfCardInDeck = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    public int cardRandom;
-    int cardCount = 0;
-    int i = 0;
-
     private void Awake()
     {
         instance = this;
@@ -19,16 +15,20 @@ public class DeckController : MonoBehaviour
 
     void Start()
     {
-
-        CardRandom();
+        GenerateDeck();
         PrintDeck();
     }
 
     public void PrintDeck()
     {
-        for (i = 0; i < 9; i++)
+        // for (i = 0; i < 9; i++)
+        // {
+        //     Debug.Log(numOfCardInDeck[i]);
+        // }
+
+        foreach(Card card in cardDeck)
         {
-            Debug.Log(numOfCardInDeck[i]);
+            Debug.Log(": " + card.cardName);
         }
     }
 
@@ -36,6 +36,7 @@ public class DeckController : MonoBehaviour
     {
 
     }
+    
     void cardTypeCount(int cardID)
     {
         switch (cardID)
@@ -72,9 +73,10 @@ public class DeckController : MonoBehaviour
                 break;
         }
     }
-    void CardRandom()
+    void GenerateDeck()
     {
         int specialCardCount = 0;
+        int cardRandom,cardCount;
         // Random normal cards
         for (cardCount = 0; cardCount < 40; cardCount++)
         {
@@ -94,9 +96,17 @@ public class DeckController : MonoBehaviour
             Card temp = new Card(cardRandom);
             cardDeck.Add(temp);
             cardTypeCount(cardRandom);
-            Debug.Log((cardCount + 1) + cardDeck[cardCount].cardName);
+            // Debug.Log((cardCount + 1) + cardDeck[cardCount].cardName);
         }
 
 
+    }
+
+    public void DrawCard(int amount)
+    {
+        for(int i = 0; i < amount; i++)
+        {
+            
+        }
     }
 }
