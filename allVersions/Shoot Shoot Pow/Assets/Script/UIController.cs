@@ -44,6 +44,7 @@ public class UIController : MonoBehaviour
             {
                 currentTime = 0;
                 setupScreen.SetActive(false);
+                DeckController.instance.spawnDeck();
             }
         }
 

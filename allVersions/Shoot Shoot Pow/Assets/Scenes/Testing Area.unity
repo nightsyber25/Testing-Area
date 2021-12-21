@@ -1974,6 +1974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numOfCardInDeck: 000000000000000000000000000000000000000000000000000000000000000000000000
+  cardPrefab: {fileID: 3697570973997984958, guid: e5adeefd9e5a9ac4f86ea0a3989df791, type: 3}
 --- !u!23 &2005684490
 MeshRenderer:
   m_ObjectHideFlags: 0
