@@ -118,10 +118,18 @@ public class DeckController : MonoBehaviour
 
     public void spawnDeck ()
     {
-        
-        card = Instantiate(cardPrefab,new Vector3(1.294f,1.337f,-0.2f),Quaternion.identity);
-        card = Instantiate(cardPrefab,new Vector3(1.294f,1.316f,-0.2f),Quaternion.identity);
-        card = Instantiate(cardPrefab,new Vector3(1.294f,1.295f,-0.2f),Quaternion.identity);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.337f,-0.2f),Quaternion.identity);
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.316f,-0.2f),Quaternion.identity);
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.295f,-0.2f),Quaternion.identity);
+        }
+        else
+        {
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.370f,-0.2f),Quaternion.identity);
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.355f,-0.2f),Quaternion.identity);
+            card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.346f,-0.2f),Quaternion.identity);
+        }
     }
     public void DrawCard(int amount)
     {

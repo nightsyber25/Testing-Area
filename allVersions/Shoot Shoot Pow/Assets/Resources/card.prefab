@@ -13,7 +13,9 @@ GameObject:
   - component: {fileID: 8004891373499740715}
   - component: {fileID: 1245395371595200970}
   - component: {fileID: 6909098855897056175}
-  - component: {fileID: 5930673777211639693}
+  - component: {fileID: -351160840436839763}
+  - component: {fileID: 3946591757363455762}
+  - component: {fileID: -6791219819935820432}
   m_Layer: 0
   m_Name: card
   m_TagString: Untagged
@@ -112,22 +114,54 @@ MonoBehaviour:
   rock: {fileID: 2100000, guid: 8165a5b6b582c04478f47e39fbb79585, type: 2}
   paper: {fileID: 2100000, guid: e98d3c749f154e14ea480cdc119f23ee, type: 2}
   scissor: {fileID: 2100000, guid: 660e9f473f2969643a32f774d83a9aa3, type: 2}
---- !u!95 &5930673777211639693
-Animator:
-  serializedVersion: 3
+--- !u!114 &-351160840436839763
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3697570973997984958}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fd05af4b91a01824dbc0d7d22ccabc45, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e242cc1c386faf47964965376a0e9cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3946591757363455762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697570973997984958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 0}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-6791219819935820432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3697570973997984958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 0
