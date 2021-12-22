@@ -10,17 +10,5 @@ public class movementController : MonoBehaviour
     {
         
     }
-    public void moveCardToFrontOfPlayer (int posi)
-    {
-        switch (posi)
-        {
-            case 1:
-                
-                break;
-            case 2:
-                break;
-            case 3:
-                break; 
-        }
-    }
+   
 }

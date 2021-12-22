@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class cardController : MonoBehaviour
 {
+    public static cardController instance;
     [SerializeField] Material rock;
     [SerializeField] Material paper;
     [SerializeField] Material scissor;
     [SerializeField] static int posi = 0;
     // Start is called before the first frame update
+    public GameObject card;
     void Start()
     {
         StartCoroutine(CheckType());
+        moveCardToFrontOfPlayer(posi);
     }
 
     IEnumerator CheckType()
@@ -40,11 +43,20 @@ public class cardController : MonoBehaviour
                 yield return new WaitForSeconds(0.5f);
                 break;    
         }
-        movementController.instance.moveCardToFrontOfPlayer(posi);
     }
-    // Update is called once per frame
-    void Update()
+    public void moveCardToFrontOfPlayer (int posi)
     {
-        
+        switch (posi)
+        {
+            case 1:
+                card.GetComponent<Animator>().Play("firstPosiDraw");
+                break;
+            case 2:
+                card.GetComponent<Animator>().Play("secondPosiDraw");
+                break;
+            case 3:
+                card.GetComponent<Animator>().Play("thirdPositionDraw");
+                break; 
+        }
     }
 }
