@@ -9,7 +9,7 @@ public class cardController : MonoBehaviour
     [SerializeField] Material paper;
     [SerializeField] Material scissor;
     [SerializeField] static int posi = 0;
-    // Start is called before the first frame update
+    
     public GameObject card;
     void Start()
     {

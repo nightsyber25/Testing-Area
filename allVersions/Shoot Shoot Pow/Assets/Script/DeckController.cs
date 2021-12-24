@@ -19,23 +19,23 @@ public class DeckController : MonoBehaviour
     void Start()
     {
         GenerateDeck();
-        PrintDeck();
+        //PrintDeck();
     }
 
-    public void PrintDeck()
-    {
-        int i = 0;
-        // for (i = 0; i < 9; i++)
-        // {
-        //     Debug.Log(numOfCardInDeck[i]);
-        // }
+    // public void PrintDeck()
+    // {
+    //     int i = 0;
+    //      for (i = 0; i < 9; i++)
+    //      {
+    //          Debug.Log(numOfCardInDeck[i]);
+    //      }
 
-        foreach(Card card in cardDeck)
-        {
-            Debug.Log(i +": " + card.cardName);
-            i++;
-        }
-    }
+    //     foreach(Card card in cardDeck)
+    //     {
+    //         Debug.Log(i +": " + card.cardName);
+    //         i++;
+    //     }
+    // }
 
     void Update()
     {
@@ -80,7 +80,7 @@ public class DeckController : MonoBehaviour
     }
     void GenerateDeck()
     {
-        int specialCardCount = 0;
+        //int specialCardCount = 0;
         int cardRandom,cardCount;
         // Random normal cards
         // for (cardCount = 0; cardCount < 40; cardCount++)
