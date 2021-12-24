@@ -80,7 +80,7 @@ public class DeckController : MonoBehaviour
     }
     void GenerateDeck()
     {
-        int specialCardCount = 0;
+        // int specialCardCount = 0;
         int cardRandom,cardCount;
         // Random normal cards
         // for (cardCount = 0; cardCount < 40; cardCount++)

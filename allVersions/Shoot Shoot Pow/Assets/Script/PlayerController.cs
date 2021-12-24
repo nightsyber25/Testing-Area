@@ -29,13 +29,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
             PlayerMovement();
                 if(Input.GetMouseButtonDown(0))
                 {
-                    Shoot();
+                    GetChoice();
                 }
             CursorUnlockWhenESC();
         }
     }
 
-    private void Shoot()
+    private void GetChoice()
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(.5f, .5f, 0f));
         ray.origin = cam.transform.position;
