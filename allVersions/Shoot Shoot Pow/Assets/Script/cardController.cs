@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cardController : MonoBehaviour
+public class CardController : MonoBehaviour , IClicked
 {
-    public static cardController instance;
+    public void OnClick()
+    {
+        Debug.Log("Click: " + gameObject.name);
+    }
+
+    public static CardController instance;
     [SerializeField] Material rock;
     [SerializeField] Material paper;
     [SerializeField] Material scissor;
@@ -14,7 +19,7 @@ public class cardController : MonoBehaviour
     void Start()
     {
         StartCoroutine(CheckType());
-        moveCardToFrontOfPlayer(posi);
+        MoveCardToFrontOfPlayer(posi);
     }
 
     IEnumerator CheckType()
@@ -44,7 +49,7 @@ public class cardController : MonoBehaviour
                 break;    
         }
     }
-    public void moveCardToFrontOfPlayer (int posi)
+    public void MoveCardToFrontOfPlayer (int posi)
     {
         switch (posi)
         {
