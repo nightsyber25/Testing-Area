@@ -20,11 +20,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         Setup,
         InitPlayer,
-        StartGameDraw,
-        SpecialCardPhase,
-        NormalCardPhase,
-        DetermineWinner,
-        Endturn,
     }
 
     public void OnEvent(EventData photonEvent)

@@ -275,7 +275,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 6507148488455192675}
   mouseSensitive: 1
-  bulletImpact: {fileID: 6465921985941622615, guid: 39ec34606778cd640944e420e9fac6ee, type: 3}
 --- !u!143 &6507148488622843036
 CharacterController:
   m_ObjectHideFlags: 0

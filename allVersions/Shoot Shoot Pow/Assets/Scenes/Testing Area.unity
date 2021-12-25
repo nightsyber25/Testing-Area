@@ -797,7 +797,6 @@ GameObject:
   - component: {fileID: 470200709}
   - component: {fileID: 470200712}
   - component: {fileID: 470200711}
-  - component: {fileID: 470200710}
   m_Layer: 0
   m_Name: ComfirmButtonTop
   m_TagString: Untagged
@@ -813,26 +812,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470200708}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.313722, y: 26.225452, z: -65.3108}
+  m_LocalPosition: {x: 0, y: 0.075, z: 0}
   m_LocalScale: {x: 0.1641171, y: 0.041395217, z: 0.16842857}
   m_Children: []
   m_Father: {fileID: 2066462335}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &470200710
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 470200708}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &470200711
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1017,7 +1002,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 922543213}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.813, z: -0.001}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1278,7 +1263,6 @@ GameObject:
   - component: {fileID: 1303164896}
   - component: {fileID: 1303164899}
   - component: {fileID: 1303164898}
-  - component: {fileID: 1303164897}
   m_Layer: 0
   m_Name: ConfirmButtonBase
   m_TagString: Untagged
@@ -1294,25 +1278,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1303164895}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.302522, y: 26.139454, z: -65.309}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3343832, y: 0.13825236, z: 0.2838278}
   m_Children: []
   m_Father: {fileID: 2066462335}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1303164897
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1303164895}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1303164898
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1420,6 +1391,10 @@ PrefabInstance:
     - target: {fileID: 3946591757363455762, guid: e5adeefd9e5a9ac4f86ea0a3989df791, type: 3}
       propertyPath: sceneViewId
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909098855897056175, guid: e5adeefd9e5a9ac4f86ea0a3989df791, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5adeefd9e5a9ac4f86ea0a3989df791, type: 3}
@@ -2438,6 +2413,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2066462335}
   - component: {fileID: 2066462334}
+  - component: {fileID: 2066462336}
   m_Layer: 0
   m_Name: ConfirmButton
   m_TagString: Untagged
@@ -2465,7 +2441,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066462333}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.020721, y: -24.873453, z: 65.1568}
+  m_LocalPosition: {x: -1.073, y: 1.267, z: -0.147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1303164896}
@@ -2473,6 +2449,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2066462336
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066462333}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.16582221, y: 0.050127268, z: 0.17437802}
+  m_Center: {x: -0.000000029802322, y: 0.09327173, z: -0.0007912293}
 --- !u!114 &8564336700923350192
 MonoBehaviour:
   m_ObjectHideFlags: 0

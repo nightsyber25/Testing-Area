@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float verticalRotationStored;
     private Vector2 mouseInput;
     private Camera cam;
-    [SerializeField] GameObject bulletImpact;
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +42,11 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Debug.Log("HIT" + hit.collider.gameObject.name);
-            GameObject bulletImpactObject = Instantiate(bulletImpact, hit.point + (hit.normal * 0.002f), Quaternion.LookRotation(hit.normal, Vector3.up));
-            Destroy(bulletImpactObject, 10f);
+            IClicked click = hit.collider.gameObject.GetComponent<IClicked>();
+            if(click != null)
+            {
+                click.OnClick();
+            }
         }
     }
 

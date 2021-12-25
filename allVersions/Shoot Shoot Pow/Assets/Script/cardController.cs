@@ -19,7 +19,7 @@ public class CardController : MonoBehaviour , IClicked
     void Start()
     {
         StartCoroutine(CheckType());
-        MoveCardToFrontOfPlayer(posi);
+        // MoveCardToFrontOfPlayer(posi);
     }
 
     IEnumerator CheckType()
@@ -49,19 +49,19 @@ public class CardController : MonoBehaviour , IClicked
                 break;    
         }
     }
-    public void MoveCardToFrontOfPlayer (int posi)
-    {
-        switch (posi)
-        {
-            case 1:
-                card.GetComponent<Animator>().Play("firstPosiDraw");
-                break;
-            case 2:
-                card.GetComponent<Animator>().Play("secondPosiDraw");
-                break;
-            case 3:
-                card.GetComponent<Animator>().Play("thirdPositionDraw");
-                break; 
-        }
-    }
+    // // public void MoveCardToFrontOfPlayer (int posi)
+    // {
+    //     switch (posi)
+    //     {
+    //         case 1:
+    //             card.GetComponent<Animator>().Play("firstPosiDraw");
+    //             break;
+    //         case 2:
+    //             card.GetComponent<Animator>().Play("secondPosiDraw");
+    //             break;
+    //         case 3:
+    //             card.GetComponent<Animator>().Play("thirdPositionDraw");
+    //             break; 
+    //     }
+    // }
 }
