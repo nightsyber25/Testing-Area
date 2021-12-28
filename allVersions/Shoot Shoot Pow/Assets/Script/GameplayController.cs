@@ -13,6 +13,12 @@ public enum Choices
 public class GameplayController : MonoBehaviour
 {
     // private Choices playerOne = Choices.None, playerTwo = Choices.None;
+    public static GameplayController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void DetermineWinner(string player1, string player2)
     {

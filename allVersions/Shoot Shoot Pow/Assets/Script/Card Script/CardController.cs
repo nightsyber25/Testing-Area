@@ -15,7 +15,6 @@ public class CardController : MonoBehaviour , IClicked
     [SerializeField] Material scissor;
     [SerializeField] static int posi = 0;
     
-    public GameObject card;
     void Start()
     {
         StartCoroutine(CheckType());
@@ -49,19 +48,19 @@ public class CardController : MonoBehaviour , IClicked
                 break;    
         }
     }
-    // // public void MoveCardToFrontOfPlayer (int posi)
-    // {
-    //     switch (posi)
-    //     {
-    //         case 1:
-    //             card.GetComponent<Animator>().Play("firstPosiDraw");
-    //             break;
-    //         case 2:
-    //             card.GetComponent<Animator>().Play("secondPosiDraw");
-    //             break;
-    //         case 3:
-    //             card.GetComponent<Animator>().Play("thirdPositionDraw");
-    //             break; 
-    //     }
-    // }
+    public void MoveCardToFrontOfPlayer (int posi)
+    {
+        switch (posi)
+        {
+            case 1:
+                gameObject.GetComponent<Animator>().Play("firstPosiDraw");
+                break;
+            case 2:
+                gameObject.GetComponent<Animator>().Play("secondPosiDraw");
+                break;
+            case 3:
+                gameObject.GetComponent<Animator>().Play("thirdPositionDraw");
+                break; 
+        }
+    }
 }

@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private Vector2 mouseInput;
     private Camera cam;
 
+    public string selectedCard;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +44,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Debug.Log("HIT" + hit.collider.gameObject.name);
+            selectedCard = hit.collider.gameObject.name;
             IClicked click = hit.collider.gameObject.GetComponent<IClicked>();
             if(click != null)
             {
@@ -87,3 +90,5 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
 
 }
+
+// PhotonNetwork.LocalPlayer.ActorNumber = get actor number
