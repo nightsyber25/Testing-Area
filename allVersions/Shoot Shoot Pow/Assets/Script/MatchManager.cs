@@ -10,6 +10,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static MatchManager instance;
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
+    public int countWinToWin = 3;
+    public GameState state = GameState.Setup;
+    private int index;
 
     private void Awake()
     {
@@ -19,8 +22,19 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public enum EventCodes : byte
     {
         InitPlayer,
+        PlayerList,
         DetermineWinner,
         UpdatedPlayerSelectedCard,
+        UpdatedScore,
+    }
+
+    public enum GameState
+    {
+        Setup,
+        SpecialCard,
+        NormalCard,
+        EndRound,
+        EndMatch
     }
 
     public void OnEvent(EventData photonEvent)
@@ -40,15 +54,26 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     break;
 
+
+                case EventCodes.PlayerList:
+
+                    PlayerListRecieve(data);
+
+                    break;
+
                 case EventCodes.DetermineWinner:
 
-                    InitPlayerRecieve(data);
+                    DetermineWinnerRecieve(data);
 
                     break;
 
                 case EventCodes.UpdatedPlayerSelectedCard:
 
                     UpdatedPlayerSelectedCardRecieve(data);
+
+                    break;
+                case EventCodes.UpdatedScore:
+
 
                     break;
 
@@ -73,7 +98,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     public override void OnLeftRoom()
@@ -97,7 +122,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         object[] package = new object[4];
         package[0] = username;
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        package[2] = "";
         package[3] = 0;
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.InitPlayer,
@@ -112,19 +136,150 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3]);
 
         allPlayers.Add(player);
+        PlayerListSend();
+    }
+
+    //Shared list to all player
+    public void PlayerListSend()
+    {
+        object[] package = new object[allPlayers.Count];
+
+        for(int i = 0; i < allPlayers.Count; i++)
+        {
+            object[] piece = new object[4];
+
+            piece[0] = allPlayers[i].name;
+            piece[1] = allPlayers[i].actor;
+            piece[2] = allPlayers[i].selectedCard;
+            piece[3] = allPlayers[i].countWin;
+
+            package[i] = piece;
+            
+        }
+
+        PhotonNetwork.RaiseEvent((byte)EventCodes.PlayerList,
+        package,
+        new RaiseEventOptions { Receivers = ReceiverGroup.All},
+        new SendOptions { Reliability = true }
+        );
+
+    }
+
+    public void PlayerListRecieve(object[] dataRecieve)
+    {
+        allPlayers.Clear();
+
+        for (int i = 0; i < dataRecieve.Length; i++)
+        {
+            object[] piece = (object[])dataRecieve[i];
+            PlayerInfo player = new PlayerInfo(
+                (string)piece[0],
+                (int)piece[1],
+                (string)piece[2],
+                (int)piece[3]
+            );
+            allPlayers.Add(player);
+
+            if(PhotonNetwork.LocalPlayer.ActorNumber == player.actor)
+            {
+                index = i;
+            }
+        }
     }
 
     public void DetermineWinnerSend()
     {
-        string card1,card2;
-        card1 = allPlayers[0].selectedCard;
-        card2 = allPlayers[1].selectedCard;
-        GameplayController.instance.DetermineWinner(card1,card2);
+        object[] package = new object[1];
+        switch (allPlayers[0].selectedCard)
+        {
+            case "Scissor":
+                switch (allPlayers[1].selectedCard)
+                {
+                    case "Scissor":
+                        package[0] = null;
+                        break;
+                    case "Paper":
+                        package[0] = allPlayers[0].name;
+                        break;
+                    case "Rock":
+                        package[0] = allPlayers[1].name;
+                        break;
+                }
+                break;
+            case "Paper":
+                switch (allPlayers[1].selectedCard)
+                {
+                    case "Scissor":
+                        package[0] = allPlayers[1].name;
+                        break;
+                    case "Paper":
+                        package[0] = null;
+                        break;
+                    case "Rock":
+                        package[0] = allPlayers[0].name;
+                        break;
+                }
+                break;
+            case "Rock":
+                switch (allPlayers[1].selectedCard)
+                {
+                    case "Scissor":
+                        package[0] = allPlayers[0].name;
+                        break;
+                    case "Paper":
+                        package[0] = allPlayers[1].name;
+                        break;
+                    case "Rock":
+                        package[0] = null;
+                        break;
+                }
+                break;
+        }
+
+        PhotonNetwork.RaiseEvent((byte)EventCodes.DetermineWinner,
+        package,
+        new RaiseEventOptions { Receivers = ReceiverGroup.All },
+        new SendOptions { Reliability = true }
+        );
     }
 
-    public void DetermineWinnerRecieve()
-    {
+    public void DetermineWinnerRecieve(object[] dataRecieve)
+    { 
+        string winner = (string)dataRecieve[0];
 
+        for(int i = 0;i < allPlayers.Count;i++)
+        {
+            if(allPlayers[i].name == winner)
+            {
+                allPlayers[i].countWin += 1;
+                Debug.Log("Updated "+ allPlayers[i].name + " Count win: "+ allPlayers[i].countWin);
+                UIController.instance.statusText.text = allPlayers[i].name + "Win!!!";
+                UIController.instance.statusText.gameObject.SetActive(true);
+            }
+            else
+            {
+                UIController.instance.statusText.text = "Tie";
+                UIController.instance.statusText.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void WinCheck()
+    {
+        bool winnerFound = false;
+        foreach(PlayerInfo player in allPlayers)
+        {
+            if(player.countWin > 3 && player.countWin > 0)
+            {
+                winnerFound = true;
+                break;
+            }
+        }
+
+        if(winnerFound)
+        {
+            state = GameState.EndMatch;
+        }
     }
 
     public void UpdatedPlayerSelectedCardSend(int actorSending,string card)
@@ -133,7 +288,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.UpdatedPlayerSelectedCard,
         package,
-        new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient },
+        new RaiseEventOptions { Receivers = ReceiverGroup.All },
         new SendOptions { Reliability = true }
         );
 
@@ -165,9 +320,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             name = _name;
             actor = _actor;
-
             selectedCard = _selectedCard;
             countWin = _countWin;
         }
     }
+
 }

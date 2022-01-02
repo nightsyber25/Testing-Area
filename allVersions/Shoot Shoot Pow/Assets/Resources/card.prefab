@@ -115,7 +115,6 @@ MonoBehaviour:
   rock: {fileID: 2100000, guid: 8165a5b6b582c04478f47e39fbb79585, type: 2}
   paper: {fileID: 2100000, guid: e98d3c749f154e14ea480cdc119f23ee, type: 2}
   scissor: {fileID: 2100000, guid: 660e9f473f2969643a32f774d83a9aa3, type: 2}
-  card: {fileID: 0}
 --- !u!114 &-351160840436839763
 MonoBehaviour:
   m_ObjectHideFlags: 0

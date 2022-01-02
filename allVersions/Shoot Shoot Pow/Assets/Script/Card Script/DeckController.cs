@@ -116,7 +116,7 @@ public class DeckController : MonoBehaviour
 
     }
 
-    public void spawnDeck ()
+    public void SpawnDeck()
     {
         if (PhotonNetwork.IsMasterClient)
         {

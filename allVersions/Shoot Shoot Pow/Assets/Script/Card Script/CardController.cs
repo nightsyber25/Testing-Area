@@ -2,12 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardController : MonoBehaviour , IClicked
+public class CardController : MonoBehaviour
 {
-    public void OnClick()
-    {
-        Debug.Log("Click: " + gameObject.name);
-    }
 
     public static CardController instance;
     [SerializeField] Material rock;

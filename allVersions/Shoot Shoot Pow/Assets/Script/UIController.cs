@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     public TMP_Text scissorAmount;
     public TMP_Text specialAmount;
     [SerializeField] TMP_Text timeCounter;
+    public TMP_Text statusText;
 
     private float currentTime = 0f;
     private float startingTime = 5f;
@@ -28,23 +29,23 @@ public class UIController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        setupScreen.SetActive(true);
-        UpdateSetupScreen();
-        currentTime = startingTime;
+        statusText.gameObject.SetActive(false);
+        SetupTimer();
     }
 
     // Update is called once per frame
     void Update()
     {
         if (setupScreen.activeInHierarchy)
-        {
+        {      
+            UpdateSetupScreen();
             currentTime -= 1 * Time.deltaTime;
             timeCounter.text = currentTime.ToString("0");
             if (currentTime < 0)
             {
                 currentTime = 0;
                 setupScreen.SetActive(false);
-                DeckController.instance.spawnDeck();
+                DeckController.instance.SpawnDeck();
             }
         }
 
@@ -92,5 +93,11 @@ public class UIController : MonoBehaviour
         DeckController.instance.numOfCardInDeck[6]+
         DeckController.instance.numOfCardInDeck[7]+
         DeckController.instance.numOfCardInDeck[8]).ToString();
+    }
+
+    public void SetupTimer()
+    {
+        currentTime = startingTime;
+        setupScreen.SetActive(true);
     }
 }
