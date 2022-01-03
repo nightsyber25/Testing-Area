@@ -8,15 +8,15 @@ public class ConfirmButton : MonoBehaviourPunCallbacks , IClicked
     public void OnClick()
     {
 
-        if(MatchManager.instance.allPlayers[0].selectedCard != null && MatchManager.instance.allPlayers[1].selectedCard != null)
-        {
-            MatchManager.instance.DetermineWinnerSend();
-        }
-        else
-        {
-            UIController.instance.statusText.text = "Wait for other player";
-            UIController.instance.statusText.gameObject.SetActive(true);
-        }
+        // if(MatchManager.instance.allPlayers[0].selectedCard != null && MatchManager.instance.allPlayers[1].selectedCard != null)
+        // {
+        //     MatchManager.instance.DetermineWinnerSend();
+        // }
+        // else
+        // {
+        //     UIController.instance.statusText.text = "Wait for other player";
+        //     UIController.instance.statusText.gameObject.SetActive(true);
+        // }
         
 
         // if(MatchManager.instance.state == MatchManager.GameState.SpecialCard)
@@ -28,6 +28,6 @@ public class ConfirmButton : MonoBehaviourPunCallbacks , IClicked
 
         // }
 
-        // UIController.instance.SetupTimer();
+        UIController.instance.SetupTimer();
     }
 }

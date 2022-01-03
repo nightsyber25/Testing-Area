@@ -10,6 +10,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static MatchManager instance;
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
+    public List<Card> Deck = new List<Card>();
     public int countWinToWin = 3;
     public GameState state = GameState.Setup;
     private int index;
@@ -23,6 +24,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         InitPlayer,
         PlayerList,
+        SetupPhrase,
         DetermineWinner,
         UpdatedPlayerSelectedCard,
         UpdatedScore,
@@ -61,6 +63,12 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                     break;
 
+                case EventCodes.SetupPhrase:
+
+                    SetupPhaseRecieve(data);
+
+                    break; 
+
                 case EventCodes.DetermineWinner:
 
                     DetermineWinnerRecieve(data);
@@ -93,6 +101,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             InitPlayerSend(PhotonNetwork.NickName);
         }
 
+        if(PhotonNetwork.IsMasterClient)
+        {
+            SetupPhaseSend();
+        }
+        
     }
 
     // Update is called once per frame
@@ -187,9 +200,23 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
+    public void SetupPhaseSend()
+    {
+        object[] package = new object[2];
+
+        package[0] = DeckController.instance.GenerateDeck();
+
+        
+    }
+
+    public void SetupPhaseRecieve(object[] dataRecieve)
+    {
+        
+    }
+
     public void DetermineWinnerSend()
     {
-        object[] package = new object[1];
+        object[] package = new object[2];
         switch (allPlayers[0].selectedCard)
         {
             case "Scissor":
@@ -235,6 +262,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 }
                 break;
         }
+        package[1] = GameState.EndRound;
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.DetermineWinner,
         package,
@@ -246,6 +274,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void DetermineWinnerRecieve(object[] dataRecieve)
     { 
         string winner = (string)dataRecieve[0];
+        state = (GameState)dataRecieve[1];
 
         for(int i = 0;i < allPlayers.Count;i++)
         {
@@ -291,7 +320,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         new RaiseEventOptions { Receivers = ReceiverGroup.All },
         new SendOptions { Reliability = true }
         );
-
     }
 
     public void UpdatedPlayerSelectedCardRecieve(object[] dataRecieve)
