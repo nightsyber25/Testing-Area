@@ -30,7 +30,6 @@ public class UIController : MonoBehaviour
     void Start()
     {
         statusText.gameObject.SetActive(false);
-        SetupTimer();
     }
 
     // Update is called once per frame
@@ -95,7 +94,7 @@ public class UIController : MonoBehaviour
         DeckController.instance.numOfCardInDeck[8]).ToString();
     }
 
-    public void SetupTimer()
+    public void SetSetupScreen()
     {
         currentTime = startingTime;
         setupScreen.SetActive(true);

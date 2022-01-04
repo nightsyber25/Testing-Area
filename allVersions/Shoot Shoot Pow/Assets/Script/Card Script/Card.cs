@@ -8,6 +8,7 @@ using UnityEngine;
 //[CreateAssetMenu(fileName = "Card", menuName = "JKPTry/Card", order = 0)]
 public class Card 
 {
+    // ID == 0 None
     // ID == 1 Scisscor
     // ID == 2 Paper
     // ID == 3 Rock

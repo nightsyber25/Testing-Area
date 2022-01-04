@@ -18,16 +18,15 @@ public class ConfirmButton : MonoBehaviourPunCallbacks , IClicked
         //     UIController.instance.statusText.gameObject.SetActive(true);
         // }
         
-
-        // if(MatchManager.instance.state == MatchManager.GameState.SpecialCard)
-        // {
+        
+        if(MatchManager.instance.state == MatchManager.GameState.SpecialCard)
+        {
             
-        // }
-        // else if(MatchManager.instance.state == MatchManager.GameState.NormalCard)
-        // {
+        }
+        else if(MatchManager.instance.state == MatchManager.GameState.NormalCard)
+        {
 
-        // }
+        }
 
-        UIController.instance.SetupTimer();
     }
 }

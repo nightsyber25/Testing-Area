@@ -10,10 +10,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
     public static MatchManager instance;
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
-    public List<Card> Deck = new List<Card>();
+    public List<Card> deck = new List<Card>();
     public int countWinToWin = 3;
     public GameState state = GameState.Setup;
     private int index;
+    public int currentNumberOfCardInDeck = 0;
 
     private void Awake()
     {
@@ -99,6 +100,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             InitPlayerSend(PhotonNetwork.NickName);
+            
         }
 
         if(PhotonNetwork.IsMasterClient)
@@ -132,10 +134,13 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void InitPlayerSend(string username)
     {
-        object[] package = new object[4];
+        object[] package = new object[7];
         package[0] = username;
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
         package[3] = 0;
+        package[4] = new Card(0);
+        package[5] = new Card(0);
+        package[6] = new Card(0);
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.InitPlayer,
         package,
@@ -146,7 +151,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void InitPlayerRecieve(object[] dataRecieve)
     {
-        PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3]);
+        PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3],(Card)dataRecieve[4],(Card)dataRecieve[5],(Card)dataRecieve[6]);
 
         allPlayers.Add(player);
         PlayerListSend();
@@ -159,12 +164,15 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         for(int i = 0; i < allPlayers.Count; i++)
         {
-            object[] piece = new object[4];
+            object[] piece = new object[7];
 
             piece[0] = allPlayers[i].name;
             piece[1] = allPlayers[i].actor;
             piece[2] = allPlayers[i].selectedCard;
             piece[3] = allPlayers[i].countWin;
+            piece[4] = allPlayers[i].inHandCard1;
+            piece[5] = allPlayers[i].inHandCard2;
+            piece[6] = allPlayers[i].inHandCard3;
 
             package[i] = piece;
             
@@ -178,6 +186,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     }
 
+    
     public void PlayerListRecieve(object[] dataRecieve)
     {
         allPlayers.Clear();
@@ -189,7 +198,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 (string)piece[0],
                 (int)piece[1],
                 (string)piece[2],
-                (int)piece[3]
+                (int)piece[3],
+                (Card)piece[4],
+                (Card)piece[5],
+                (Card)piece[6]
             );
             allPlayers.Add(player);
 
@@ -202,15 +214,38 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void SetupPhaseSend()
     {
-        object[] package = new object[2];
+        List<Card> deckTemp = DeckController.instance.GenerateDeck();
+        currentNumberOfCardInDeck = deckTemp.Count;
 
-        package[0] = DeckController.instance.GenerateDeck();
+        object[] package = new object[currentNumberOfCardInDeck];
 
-        
+        for(int i = 0; i < currentNumberOfCardInDeck; i++)
+        {
+            object[] piece = new object[1];
+
+            piece[0] = deckTemp[i].cardID;
+
+            package[i] = piece;
+        }
+
+        PhotonNetwork.RaiseEvent((byte)EventCodes.SetupPhrase,
+        package,
+        new RaiseEventOptions { Receivers = ReceiverGroup.All},
+        new SendOptions { Reliability = true }
+        );
     }
 
     public void SetupPhaseRecieve(object[] dataRecieve)
     {
+        deck.Clear();
+        for(int i = 0; i < dataRecieve.Length; i++)
+        {
+            object[] piece = (object[])dataRecieve[i];
+            Card CardInDeck = new Card((int)piece[0]);
+            deck.Add(CardInDeck);
+        }
+
+        UIController.instance.SetSetupScreen();
         
     }
 
@@ -344,12 +379,18 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         public string selectedCard;
         public int countWin;
 
-        public PlayerInfo(string _name, int _actor,string _selectedCard,int _countWin)
+        public Card inHandCard1 ,inHandCard2 ,inHandCard3;
+        
+
+        public PlayerInfo(string _name, int _actor,string _selectedCard,int _countWin,Card _inHandCard1,Card _inHandCard2,Card _inHandCard3)
         {
             name = _name;
             actor = _actor;
             selectedCard = _selectedCard;
             countWin = _countWin;
+            inHandCard1 = _inHandCard1;
+            inHandCard2 = _inHandCard2;
+            inHandCard3 = _inHandCard3;
         }
     }
 

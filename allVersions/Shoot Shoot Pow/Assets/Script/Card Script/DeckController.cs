@@ -9,7 +9,7 @@ public class DeckController : MonoBehaviour
     public List<Card> cardDeck = new List<Card>();
     public int[] numOfCardInDeck = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-    private int[] cardProb = {1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,5,5,6,6,7,7,8,8};
+    private int[] cardProb = {1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,4,4,5,5,6,6,7,7,8,8};
     [SerializeField] GameObject cardPrefab;
     GameObject card;
 
@@ -20,7 +20,7 @@ public class DeckController : MonoBehaviour
 
     void Start()
     {
-        GenerateDeck();
+        // GenerateDeck();
         //PrintDeck();
     }
 
@@ -44,7 +44,7 @@ public class DeckController : MonoBehaviour
 
     }
     
-    void cardTypeCount(int cardID)
+    void CardTypeCount(int cardID)
     {
         switch (cardID)
         {
@@ -91,7 +91,7 @@ public class DeckController : MonoBehaviour
             //Random ID in normal cards
             if (specialCardCount < 10)
             {
-                cardRandom = cardProb[Random.Range(0, 25)];
+                cardRandom = cardProb[Random.Range(0, 28)];
                 if (cardRandom > 3)
                 {
                     specialCardCount++;
@@ -103,7 +103,7 @@ public class DeckController : MonoBehaviour
             }
             Card temp = new Card(cardRandom);
             cardDeck.Add(temp);
-            cardTypeCount(cardRandom);
+            CardTypeCount(cardRandom);
             Debug.Log((cardCount + 1) + cardDeck[cardCount].cardName);
         }
         
