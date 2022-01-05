@@ -13,7 +13,7 @@ public class CardController : MonoBehaviour
     
     void Start()
     {
-        StartCoroutine(CheckType());
+        // StartCoroutine(CheckType());
         // MoveCardToFrontOfPlayer(posi);
     }
 

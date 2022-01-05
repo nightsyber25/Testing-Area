@@ -84,7 +84,7 @@ public class DeckController : MonoBehaviour
     {
         int specialCardCount = 0;
         int cardRandom,cardCount;
-        List<Card> cardDeckdd = new List<Card>();
+        List<Card> cardDeckTemp = new List<Card>();
     
         for (cardCount = 0; cardCount < 40; cardCount++)
         {
@@ -106,8 +106,9 @@ public class DeckController : MonoBehaviour
             CardTypeCount(cardRandom);
             Debug.Log((cardCount + 1) + cardDeck[cardCount].cardName);
         }
+        cardDeckTemp = cardDeck;
         
-        return cardDeck;
+        return cardDeckTemp;
         // for (cardCount = 0; cardCount < 30; cardCount++)
         // {
         //     cardRandom = Random.Range(1, 4);

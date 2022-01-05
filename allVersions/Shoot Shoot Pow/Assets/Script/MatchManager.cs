@@ -138,9 +138,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         package[0] = username;
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
         package[3] = 0;
-        package[4] = new Card(0);
-        package[5] = new Card(0);
-        package[6] = new Card(0);
+        package[4] = 0;
+        package[5] = 0;
+        package[6] = 0;
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.InitPlayer,
         package,
@@ -151,7 +151,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void InitPlayerRecieve(object[] dataRecieve)
     {
-        PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3],(Card)dataRecieve[4],(Card)dataRecieve[5],(Card)dataRecieve[6]);
+        PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3],(int)dataRecieve[4],(int)dataRecieve[5],(int)dataRecieve[6]);
 
         allPlayers.Add(player);
         PlayerListSend();
@@ -199,9 +199,9 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 (int)piece[1],
                 (string)piece[2],
                 (int)piece[3],
-                (Card)piece[4],
-                (Card)piece[5],
-                (Card)piece[6]
+                (int)piece[4],
+                (int)piece[5],
+                (int)piece[6]
             );
             allPlayers.Add(player);
 
@@ -378,11 +378,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         public int actor;
         public string selectedCard;
         public int countWin;
-
-        public Card inHandCard1 ,inHandCard2 ,inHandCard3;
+        public int inHandCard1 ,inHandCard2 ,inHandCard3;
         
 
-        public PlayerInfo(string _name, int _actor,string _selectedCard,int _countWin,Card _inHandCard1,Card _inHandCard2,Card _inHandCard3)
+        public PlayerInfo(string _name, int _actor,string _selectedCard,int _countWin,int _inHandCard1,int _inHandCard2,int _inHandCard3)
         {
             name = _name;
             actor = _actor;
