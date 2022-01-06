@@ -134,13 +134,7 @@ public class DeckController : MonoBehaviour
             card = PhotonNetwork.Instantiate(cardPrefab.name,new Vector3(1.294f,1.346f,-0.2f),Quaternion.identity);
         }
     }
-    public void DrawCard(int amount)
-    {
-        for(int i = 0; i < amount; i++)
-        {
-            
-        }
-    }
+    
 
 
 }

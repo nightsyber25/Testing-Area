@@ -15,6 +15,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public GameState state = GameState.Setup;
     private int index;
     public int currentNumberOfCardInDeck = 0;
+    public float phaseLength = 10f;
+    private float currentPhaseTime;
 
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         DetermineWinner,
         UpdatedPlayerSelectedCard,
         UpdatedScore,
+        DrawCard,
     }
 
     public enum GameState
@@ -53,36 +56,42 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             {
                 case EventCodes.InitPlayer:
 
-                    InitPlayerRecieve(data);
+                    InitPlayerReceive(data);
 
                     break;
 
 
                 case EventCodes.PlayerList:
 
-                    PlayerListRecieve(data);
+                    PlayerListReceive(data);
 
                     break;
 
                 case EventCodes.SetupPhrase:
 
-                    SetupPhaseRecieve(data);
+                    SetupPhaseReceive(data);
 
                     break; 
 
                 case EventCodes.DetermineWinner:
 
-                    DetermineWinnerRecieve(data);
+                    DetermineWinnerReceive(data);
 
                     break;
 
                 case EventCodes.UpdatedPlayerSelectedCard:
 
-                    UpdatedPlayerSelectedCardRecieve(data);
+                    UpdatedPlayerSelectedCardReceive(data);
 
                     break;
                 case EventCodes.UpdatedScore:
 
+
+                    break;
+
+                case EventCodes.DrawCard:
+
+                    DrawCardReceive(data);
 
                     break;
 
@@ -100,7 +109,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         else
         {
             InitPlayerSend(PhotonNetwork.NickName);
-            
+            SetPhaseTimer();
         }
 
         if(PhotonNetwork.IsMasterClient)
@@ -113,7 +122,17 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     // Update is called once per frame
     void Update()
     {
-        
+        //&& (state == GameState.SpecialCard || state == GameState.NormalCard
+        if(currentPhaseTime > 0f )
+        {
+            currentPhaseTime -= Time.deltaTime;
+            UpdateTimerDisplay();
+            if(currentPhaseTime <= 0f)
+            {
+                currentPhaseTime = 0f;
+                StateCheck();
+            }
+        }
     }
 
     public override void OnLeftRoom()
@@ -132,6 +151,37 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         PhotonNetwork.RemoveCallbackTarget(this);
     }
 
+    public void SetPhaseTimer()
+    {
+        if(phaseLength > 0)
+        {
+            currentPhaseTime = phaseLength;
+            UpdateTimerDisplay();
+        }
+    }
+
+    public void UpdateTimerDisplay()
+    {
+        var timeToDisplay = System.TimeSpan.FromSeconds(currentPhaseTime);
+        
+        UIController.instance.phaseTimer.text = timeToDisplay.Seconds.ToString("00");
+    }
+
+    void StateCheck()
+    {
+        if(state == GameState.SpecialCard)
+        {
+            state = GameState.NormalCard;
+            SetPhaseTimer();
+        }
+        else if(state == GameState.NormalCard)
+        {
+            state = GameState.SpecialCard;
+            SetPhaseTimer();
+        }
+    }
+
+    // ---------- Photon Sending and Receiving Data ----------
     public void InitPlayerSend(string username)
     {
         object[] package = new object[7];
@@ -149,14 +199,16 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         );
     }
 
-    public void InitPlayerRecieve(object[] dataRecieve)
+    public void InitPlayerReceive(object[] dataReceive)
     {
-        PlayerInfo player = new PlayerInfo((string)dataRecieve[0],(int)dataRecieve[1],(string)dataRecieve[2],(int)dataRecieve[3],(int)dataRecieve[4],(int)dataRecieve[5],(int)dataRecieve[6]);
+        PlayerInfo player = new PlayerInfo((string)dataReceive[0],(int)dataReceive[1],(string)dataReceive[2],(int)dataReceive[3],(int)dataReceive[4],(int)dataReceive[5],(int)dataReceive[6]);
 
         allPlayers.Add(player);
         PlayerListSend();
     }
 
+
+    // ---------- Photon Sending and Receiving Data ----------
     //Shared list to all player
     public void PlayerListSend()
     {
@@ -187,13 +239,13 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
 
     
-    public void PlayerListRecieve(object[] dataRecieve)
+    public void PlayerListReceive(object[] dataReceive)
     {
         allPlayers.Clear();
 
-        for (int i = 0; i < dataRecieve.Length; i++)
+        for (int i = 0; i < dataReceive.Length; i++)
         {
-            object[] piece = (object[])dataRecieve[i];
+            object[] piece = (object[])dataReceive[i];
             PlayerInfo player = new PlayerInfo(
                 (string)piece[0],
                 (int)piece[1],
@@ -235,18 +287,18 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         );
     }
 
-    public void SetupPhaseRecieve(object[] dataRecieve)
+    public void SetupPhaseReceive(object[] dataReceive)
     {
         deck.Clear();
-        for(int i = 0; i < dataRecieve.Length; i++)
+        for(int i = 0; i < dataReceive.Length; i++)
         {
-            object[] piece = (object[])dataRecieve[i];
+            object[] piece = (object[])dataReceive[i];
             Card CardInDeck = new Card((int)piece[0]);
             deck.Add(CardInDeck);
         }
 
         UIController.instance.SetSetupScreen();
-        
+        state = GameState.SpecialCard;
     }
 
     public void DetermineWinnerSend()
@@ -306,10 +358,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         );
     }
 
-    public void DetermineWinnerRecieve(object[] dataRecieve)
+    public void DetermineWinnerReceive(object[] dataReceive)
     { 
-        string winner = (string)dataRecieve[0];
-        state = (GameState)dataRecieve[1];
+        string winner = (string)dataReceive[0];
+        state = (GameState)dataReceive[1];
 
         for(int i = 0;i < allPlayers.Count;i++)
         {
@@ -327,6 +379,70 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             }
         }
     }
+
+    
+
+    public void UpdatedPlayerSelectedCardSend(int actorSending,string card)
+    {
+        object[] package = new object[] {actorSending ,card};
+
+        PhotonNetwork.RaiseEvent((byte)EventCodes.UpdatedPlayerSelectedCard,
+        package,
+        new RaiseEventOptions { Receivers = ReceiverGroup.All },
+        new SendOptions { Reliability = true }
+        );
+    }
+
+    public void UpdatedPlayerSelectedCardReceive(object[] dataReceive)
+    {
+        int actor = (int)dataReceive[0];
+        string card = (string)dataReceive[1];
+
+        for(int i = 0;i < allPlayers.Count;i++)
+        {
+            if(allPlayers[i].actor == actor)
+            {
+                allPlayers[i].selectedCard = card;
+                Debug.Log("Updated "+ allPlayers[i].name + " Card: "+ allPlayers[i].selectedCard);
+            }
+        }
+    }
+
+    public void DrawCardSend(string playerName, int drawAmount)
+    {
+        if(currentNumberOfCardInDeck > drawAmount)
+        {
+            object[] package = new object[3];
+
+            package[0] = playerName;
+
+            package[1] = drawAmount;
+
+            PhotonNetwork.RaiseEvent((byte)EventCodes.DrawCard,
+            package,
+            new RaiseEventOptions { Receivers = ReceiverGroup.All },
+            new SendOptions { Reliability = true }
+            );
+        }
+        else
+        {
+            Debug.Log("Insufficient card\n");
+        }
+    }
+    // ---------- ------------------------ ----------
+
+    public void DrawCardReceive(object[] dataReceive)
+    {
+         for(int i = 0; i < dataReceive.Length; i++)
+        {
+            object[] piece = (object[])dataReceive[i];
+            Card CardInDeck = new Card((int)piece[0]);
+            deck.Add(CardInDeck);
+        }
+    }
+
+
+
 
     private void WinCheck()
     {
@@ -346,31 +462,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
     }
 
-    public void UpdatedPlayerSelectedCardSend(int actorSending,string card)
-    {
-        object[] package = new object[] {actorSending , card};
-
-        PhotonNetwork.RaiseEvent((byte)EventCodes.UpdatedPlayerSelectedCard,
-        package,
-        new RaiseEventOptions { Receivers = ReceiverGroup.All },
-        new SendOptions { Reliability = true }
-        );
-    }
-
-    public void UpdatedPlayerSelectedCardRecieve(object[] dataRecieve)
-    {
-        int actor = (int)dataRecieve[0];
-        string card = (string)dataRecieve[1];
-
-        for(int i = 0;i < allPlayers.Count;i++)
-        {
-            if(allPlayers[i].actor == actor)
-            {
-                allPlayers[i].selectedCard = card;
-                Debug.Log("Updated "+ allPlayers[i].name + " Card: "+ allPlayers[i].selectedCard);
-            }
-        }
-    }
 
     public class PlayerInfo
     {

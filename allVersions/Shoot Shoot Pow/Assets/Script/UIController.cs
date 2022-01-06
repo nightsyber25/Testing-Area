@@ -17,6 +17,7 @@ public class UIController : MonoBehaviour
     public TMP_Text specialAmount;
     [SerializeField] TMP_Text timeCounter;
     public TMP_Text statusText;
+    public TMP_Text phaseTimer;
 
     private float currentTime = 0f;
     private float startingTime = 5f;
