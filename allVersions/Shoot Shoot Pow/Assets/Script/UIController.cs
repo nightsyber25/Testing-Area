@@ -46,6 +46,7 @@ public class UIController : MonoBehaviour
                 currentTime = 0;
                 setupScreen.SetActive(false);
                 DeckController.instance.SpawnDeck();
+                MatchManager.instance.state = MatchManager.GameState.SpecialCard;
             }
         }
 

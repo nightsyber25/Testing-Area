@@ -123,7 +123,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     void Update()
     {
         //&& (state == GameState.SpecialCard || state == GameState.NormalCard
-        if(currentPhaseTime > 0f )
+        if(currentPhaseTime > 0f && (state == GameState.SpecialCard || state == GameState.NormalCard))
         {
             currentPhaseTime -= Time.deltaTime;
             UpdateTimerDisplay();
@@ -298,7 +298,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         }
 
         UIController.instance.SetSetupScreen();
-        state = GameState.SpecialCard;
     }
 
     public void DetermineWinnerSend()
