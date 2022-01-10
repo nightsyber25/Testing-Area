@@ -15,7 +15,7 @@ public class UIController : MonoBehaviour
     public TMP_Text rockAmount;
     public TMP_Text scissorAmount;
     public TMP_Text specialAmount;
-    [SerializeField] TMP_Text timeCounter;
+    public TMP_Text setupTimeCounter;
     public TMP_Text statusText;
     public TMP_Text phaseTimer;
 
@@ -40,13 +40,13 @@ public class UIController : MonoBehaviour
         {      
             UpdateSetupScreen();
             currentTime -= 1 * Time.deltaTime;
-            timeCounter.text = currentTime.ToString("0");
+            setupTimeCounter.text = currentTime.ToString("0");
             if (currentTime < 0)
             {
                 currentTime = 0;
                 setupScreen.SetActive(false);
                 DeckController.instance.SpawnDeck();
-                MatchManager.instance.state = MatchManager.GameState.SpecialCard;
+                MatchManager.instance.state = MatchManager.GameState.NormalCard;
             }
         }
 

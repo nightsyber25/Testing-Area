@@ -7,6 +7,6 @@ public class CardScriptTest : MonoBehaviourPunCallbacks , IClicked
 {
     public void OnClick()
     {
-        MatchManager.instance.UpdatedPlayerSelectedCardSend(PhotonNetwork.LocalPlayer.ActorNumber,gameObject.name);
+        MatchManager.instance.UpdatedPlayerSelectedCardSend(PhotonNetwork.LocalPlayer.ActorNumber,int.Parse(gameObject.name));
     }
 }

@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 60775669}
   - component: {fileID: 60775672}
   m_Layer: 6
-  m_Name: Rock
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 148641250}
   - component: {fileID: 148641253}
   m_Layer: 6
-  m_Name: Paper
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 318002839}
   - component: {fileID: 318002842}
   m_Layer: 6
-  m_Name: Scissor
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2285,7 +2285,6 @@ MonoBehaviour:
   countWinToWin: 0
   state: 0
   currentNumberOfCardInDeck: 0
-  phaseLength: 20
 --- !u!4 &1835046267
 Transform:
   m_ObjectHideFlags: 0
@@ -2965,7 +2964,7 @@ RectTransform:
   - {fileID: 172662093}
   - {fileID: 746492284}
   m_Father: {fileID: 8564336702422342907}
-  m_RootOrder: 1
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3252,7 +3251,7 @@ RectTransform:
   - {fileID: 8564336702523549367}
   - {fileID: 8564336701314893935}
   m_Father: {fileID: 8564336702422342907}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4315,7 +4314,7 @@ MonoBehaviour:
   rockAmount: {fileID: 8564336701639482648}
   scissorAmount: {fileID: 8564336702707744551}
   specialAmount: {fileID: 1508798606}
-  timeCounter: {fileID: 8564336701965258524}
+  setupTimeCounter: {fileID: 8564336701965258524}
   statusText: {fileID: 283237699}
   phaseTimer: {fileID: 1258809958}
 --- !u!223 &8564336702422342904
@@ -4374,12 +4373,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 8564336702100582049}
-  - {fileID: 8564336701067487428}
+  - {fileID: 8564336701445933851}
   - {fileID: 283237698}
   - {fileID: 1261233802}
   - {fileID: 1102513620}
   - {fileID: 1258809960}
-  - {fileID: 8564336701445933851}
+  - {fileID: 8564336701067487428}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
