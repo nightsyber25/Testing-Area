@@ -275,7 +275,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 6507148488455192675}
   mouseSensitive: 1
-  selectedCard: 
+  selectedCard: 0
 --- !u!143 &6507148488622843036
 CharacterController:
   m_ObjectHideFlags: 0

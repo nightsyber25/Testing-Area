@@ -11,11 +11,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public static MatchManager instance;
     public List<PlayerInfo> allPlayers = new List<PlayerInfo>();
     public List<Card> deck = new List<Card>();
-    [SerializeField] int countWinToWin = 3;
+    [SerializeField] int countWinToWin = 5;
     public GameState state = GameState.Setup;
     private int index;
     public int currentNumberOfCardInDeck = 0;
-    private float phaseLength = 60f;
+    [SerializeField] float phaseLength = 60f;
     private float currentPhaseTime;
 
     private void Awake()
@@ -121,12 +121,20 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             currentPhaseTime -= Time.deltaTime;
             UpdateTimerDisplay();
+
+            if((allPlayers[0].selectedCard != 0 && allPlayers[1].selectedCard !=0) && currentPhaseTime > 3)
+            {
+                currentPhaseTime = 3f;
+            }
+
             if (currentPhaseTime <= 0f)
             {
                 currentPhaseTime = 0f;
                 StateCheck();
             }
         }
+
+        
     }
 
     public override void OnLeftRoom()
@@ -189,7 +197,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         bool winnerFound = false;
         foreach (PlayerInfo player in allPlayers)
         {
-            if(player.countWin > countWinToWin)
+            if(player.countWin >= countWinToWin)
             {
                 winnerFound = true;
                 break;
@@ -200,6 +208,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             state = GameState.EndMatch;
             EndGame();
+        }
+        else
+        {
+            StartCoroutine(EndRo());
         }
     }
 
@@ -225,13 +237,24 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         PhotonNetwork.LeaveRoom();
     }
 
+    private IEnumerator EndRo()
+    {
+        yield return new WaitForSeconds(3f);
+        foreach(PlayerInfo player in allPlayers)
+        {
+            player.selectedCard = 0;
+        }
+        UIController.instance.statusText.gameObject.SetActive(false);
+        state = GameState.NormalCard;
+        SetPhaseTimer();
+    }
+
     // ---------- Photon Sending and Receiving Event ----------
     public void InitPlayerSend(string username)
     {
-        object[] package = new object[3];
+        object[] package = new object[2];
         package[0] = username;
         package[1] = PhotonNetwork.LocalPlayer.ActorNumber;
-        package[2] = 0;
 
         PhotonNetwork.RaiseEvent((byte)EventCodes.InitPlayer,
         package,
@@ -242,7 +265,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
     public void InitPlayerReceive(object[] dataReceive)
     {
-        PlayerInfo player = new PlayerInfo((string)dataReceive[0], (int)dataReceive[1], (int)dataReceive[2]);
+        PlayerInfo player = new PlayerInfo((string)dataReceive[0], (int)dataReceive[1]);
 
         allPlayers.Add(player);
         PlayerListSend();
@@ -254,11 +277,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            object[] piece = new object[3];
+            object[] piece = new object[2];
 
-            piece[0] = allPlayers[i].name;
+            piece[0] = allPlayers[i].username;
             piece[1] = allPlayers[i].actor;
-            piece[2] = allPlayers[i].countWin;
 
             package[i] = piece;
 
@@ -280,8 +302,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             object[] piece = (object[])dataReceive[i];
             PlayerInfo player = new PlayerInfo(
                 (string)piece[0],
-                (int)piece[1],
-                (int)piece[2]
+                (int)piece[1]
             );
             allPlayers.Add(player);
 
@@ -340,10 +361,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                         package[0] = null;
                         break;
                     case 2:
-                        package[0] = allPlayers[0].name;
+                        package[0] = allPlayers[0].username;
                         break;
                     case 3:
-                        package[0] = allPlayers[1].name;
+                        package[0] = allPlayers[1].username;
                         break;
                 }
                 break;
@@ -351,13 +372,13 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 switch (allPlayers[1].selectedCard)
                 {
                     case 1:
-                        package[0] = allPlayers[1].name;
+                        package[0] = allPlayers[1].username;
                         break;
                     case 2:
                         package[0] = null;
                         break;
                     case 3:
-                        package[0] = allPlayers[0].name;
+                        package[0] = allPlayers[0].username;
                         break;
                 }
                 break;
@@ -365,10 +386,10 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 switch (allPlayers[1].selectedCard)
                 {
                     case 1:
-                        package[0] = allPlayers[0].name;
+                        package[0] = allPlayers[0].username;
                         break;
                     case 2:
-                        package[0] = allPlayers[1].name;
+                        package[0] = allPlayers[1].username;
                         break;
                     case 3:
                         package[0] = null;
@@ -394,11 +415,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
         for (int i = 0; i < allPlayers.Count; i++)
         {
-            if (allPlayers[i].name == winner)
+            if (allPlayers[i].username == winner)
             {
                 allPlayers[i].countWin += 1;
-                Debug.Log("Updated " + allPlayers[i].name + " Count win: " + allPlayers[i].countWin);
-                UIController.instance.statusText.text = allPlayers[i].name + "Win!!!";
+                Debug.Log("Updated " + allPlayers[i].username + " Count win: " + allPlayers[i].countWin);
+                UIController.instance.statusText.text = allPlayers[i].username + "Win!!!";
                 UIController.instance.statusText.gameObject.SetActive(true);
                 break;
             }
@@ -408,6 +429,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 UIController.instance.statusText.gameObject.SetActive(true);
             }
         }
+
 
         StateCheck();
 
@@ -434,7 +456,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             if (allPlayers[i].actor == actor)
             {
                 allPlayers[i].selectedCard = card;
-                Debug.Log("Updated " + allPlayers[i].name + " Card: " + allPlayers[i].selectedCard);
+                Debug.Log("Updated " + allPlayers[i].username + " Card: " + allPlayers[i].selectedCard);
             }
         }
     }
@@ -461,30 +483,48 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         int drawAmount = (int)dataReceive[1];
 
         int i = 0;
+        int emptyHandSlot = 0;
+        
 
         for (i = 0; i < allPlayers.Count; i++)
         {
-            if (allPlayers[i].name == playerName)
+            if (allPlayers[i].username == playerName)
             {
                 if ((allPlayers[i].inHandCardCount + drawAmount) > 3)
                 {
                     Debug.Log("Number of cards exceed the hand capacity\n");
                     break;
                 }
-                else
+                else if(currentNumberOfCardInDeck >= drawAmount)
                 {
-                    if (currentNumberOfCardInDeck > drawAmount)
+                    while(drawAmount > 0)
                     {
-                        //player get that card 
-                        //currentNumberOfCardInDeck = currentNumberOfCardInDeck - drawAmount;
+                        emptyHandSlot = PlayerInfo.checkInhandCard(allPlayers[i]);
+                        switch(emptyHandSlot)
+                        {
+                            case 1:
+                                allPlayers[i].inHandCard1 = deck[currentNumberOfCardInDeck - 1].cardID;
+                                break;
+                            case 2:
+                                allPlayers[i].inHandCard2 = deck[currentNumberOfCardInDeck - 1].cardID;
+                                break;
+                            case 3:
+                                allPlayers[i].inHandCard3 = deck[currentNumberOfCardInDeck - 1].cardID;
+                                break;
+                            default:
+                                Debug.Log("Error obtaining card\n");
+                                break;
+                        }
 
+                        drawAmount--;
+                        currentNumberOfCardInDeck--;
                     }
-                    else
+                }
+                else
                     {
                         Debug.Log("Insufficient card to draw\n");
                         break;
                     }
-                }
             }
         }
 
@@ -492,25 +532,45 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         
     }
 
-    public class PlayerInfo
-    {
-        public string name;
-        public int actor;
-        public int selectedCard;
-        public int countWin;
-        public int inHandCard1, inHandCard2, inHandCard3, inHandCardCount;
+    // public class PlayerInfo
+    // {
+    //     public string name;
+    //     public int actor;
+    //     public int selectedCard;
+    //     public int countWin;
+    //     public int inHandCard1, inHandCard2, inHandCard3, inHandCardCount;
 
 
-        public PlayerInfo(string _name, int _actor, int _countWin)
-        {
-            name = _name;
-            actor = _actor;
-            countWin = _countWin;
-            selectedCard = 0;
-            inHandCard1 = 0;
-            inHandCard2 = 0;
-            inHandCard3 = 0;
-            inHandCardCount = 0;
-        }
-    }
+    //     public PlayerInfo(string _name, int _actor)
+    //     {
+    //         name = _name;
+    //         actor = _actor;
+    //         countWin = 0;
+    //         selectedCard = 0;
+    //         inHandCard1 = 0;
+    //         inHandCard2 = 0;
+    //         inHandCard3 = 0;
+    //         inHandCardCount = 0;
+    //     }
+
+    //     public int checkInhandCard()
+    //     {
+    //         if(inHandCard1 == 0)
+    //         {
+    //             return 1;
+    //         }
+    //         else if (inHandCard2 == 0)
+    //         {
+    //             return 2;
+    //         }
+    //         else if(inHandCard3 == 0)
+    //         {
+    //             return 3;
+    //         }
+    //         else
+    //         {
+    //             return 0;
+    //         }
+    //     }
+    // }
 }

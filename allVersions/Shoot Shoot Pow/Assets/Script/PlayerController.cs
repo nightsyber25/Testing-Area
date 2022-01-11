@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private Vector2 mouseInput;
     private Camera cam;
 
-    public string selectedCard;
+    public int selectedCard;
 
     // Start is called before the first frame update
     void Start()
@@ -44,11 +44,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Debug.Log("HIT" + hit.collider.gameObject.name);
-            selectedCard = hit.collider.gameObject.name;
+            if(hit.collider.gameObject.tag == "Card")
+            {
+                selectedCard = int.Parse(hit.collider.gameObject.name);
+            }
+            
             IClicked click = hit.collider.gameObject.GetComponent<IClicked>();
             if(click != null)
             {
-                click.OnClick();
+                click.OnClick(selectedCard);
             }
         }
     }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IClicked
 {
-    void OnClick();
+    void OnClick(int selectedCard);
 }
