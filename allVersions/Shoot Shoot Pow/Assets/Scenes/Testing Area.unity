@@ -2695,10 +2695,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab71182ac3c23e246b614f204ddd205f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countWinToWin: 5
+  allPlayers: []
+  countWinToWin: 3
   state: 0
   currentNumberOfCardInDeck: 0
-  phaseLength: 60
+  phaseLength: 20
 --- !u!4 &1835046267
 Transform:
   m_ObjectHideFlags: 0

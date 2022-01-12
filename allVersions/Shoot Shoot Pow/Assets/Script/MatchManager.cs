@@ -17,6 +17,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public int currentNumberOfCardInDeck = 0;
     [SerializeField] float phaseLength = 60f;
     private float currentPhaseTime;
+    int countPeopleDraw = 0;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public enum GameState
     {
         Setup,
+        Draw,
         SpecialCard,
         NormalCard,
         EndRound,
@@ -86,7 +88,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     break;
 
                 case EventCodes.DrawCard:
-
+                    Debug.Log("state " + state);
+                    if (state == GameState.NormalCard)
+                    {
+                        break;
+                    }
                     DrawCardReceive(data);
 
                     break;
@@ -133,8 +139,6 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                 StateCheck();
             }
         }
-
-        
     }
 
     public override void OnLeftRoom()
@@ -172,7 +176,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     }
 
     // ---------- State ----------
-    void StateCheck()
+    public void StateCheck()
     {
         if (state == GameState.SpecialCard)
         {
@@ -190,7 +194,27 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
         {
             WinCheck();
         }
+        else if (state == GameState.Draw)
+        {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                Debug.Log("Client");
+            }
+            else if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (PlayerInfo player in allPlayers)
+                {
+                    DrawCardSend(player.username, 3);
+                }
+                // if (countPeopleDraw == 2)
+                // {
+                //     state = GameState.NormalCard;
+                // }
+            }
+        }
     }
+
+
 
     private void WinCheck()
     {
@@ -518,6 +542,7 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
 
                         drawAmount--;
                         currentNumberOfCardInDeck--;
+                        Debug.Log("Current" + currentNumberOfCardInDeck);
                     }
                 }
                 else
@@ -527,9 +552,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
                     }
             }
         }
-
-        
-        
+        countPeopleDraw++;
+        if (countPeopleDraw == 2)
+        {
+            state = GameState.NormalCard;
+        }
     }
 
     // public class PlayerInfo
