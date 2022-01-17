@@ -1,2 +1,3 @@
-# testing-area
-Testing area for Photon networking
+# JanKenPon game
+
+Rock Paper Scissor card game
