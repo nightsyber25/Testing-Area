@@ -340,11 +340,11 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
     public void SetupPhaseSend()
     {
         List<Card> deckTemp = DeckController.instance.GenerateDeck();
-        currentNumberOfCardInDeck = deckTemp.Count;
+        // currentNumberOfCardInDeck = deckTemp.Count;
 
-        object[] package = new object[currentNumberOfCardInDeck];
+        object[] package = new object[deckTemp.Count];
 
-        for (int i = 0; i < currentNumberOfCardInDeck; i++)
+        for (int i = 0; i < deckTemp.Count; i++)
         {
             object[] piece = new object[1];
 
@@ -369,7 +369,8 @@ public class MatchManager : MonoBehaviourPunCallbacks, IOnEventCallback
             Card CardInDeck = new Card((int)piece[0]);
             deck.Add(CardInDeck);
         }
-
+        
+        currentNumberOfCardInDeck = deck.Count;
         UIController.instance.SetSetupScreen();
     }
 
