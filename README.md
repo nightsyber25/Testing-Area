@@ -1,3 +1,3 @@
 # JanKenPon game
 
-Rock Paper Scissor card game
+Multiplayer Rock Paper Scissor card game
